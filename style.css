@@ -294,7 +294,7 @@ select[multiple] {
   gap: 1px;
 }
 
-.tag button.remove-tag {
+ button.remove-tag {
   border: none;
   background: none;
   cursor: pointer;
@@ -528,7 +528,6 @@ h2 {
   margin: 3px;
   display: inline-flex;
   align-items: center;
-  cursor: move;
 }
 .remove-tag {
   margin-left: 6px;
