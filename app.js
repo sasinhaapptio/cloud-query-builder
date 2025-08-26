@@ -1251,57 +1251,67 @@ const selectMets = metrics.map((m, i) => {
   return `sum(\`${mapped}\`) AS ${alias}`;
 });
 
-
 // ✅ Inject tagSelectLines into SELECT
 const selectClause = `    SELECT DISTINCT ${[...selectDims, ...tagSelectLines, ...selectMets].join(", ")}`;
-
-
-  // WHERE
+// WHERE
 let whereClause = "";
 if (toggle.checked) {
   const whereGroups = document.querySelectorAll(".where-group");
 
-const conditions = Array.from(whereGroups).map((group, index, arr) => {
-  const fieldLabel = group.querySelector(".where-dimension").value;
-  const dataset = document.getElementById("datasetSelect").value;
-  const fieldMap = dimensionMappings[cloudKey][dataset] || {};
-  const field = fieldMap[fieldLabel] || fieldLabel;
-  const operator = group.querySelector(".where-operator").value;
-  const valueInput = group.querySelector(".where-value");
-  const value = valueInput.value.trim();
+  const conditions = [];
+  let orGroup = [];
 
-  // 🛑 Edge Case Validation
-  const isNullCheck = operator === "IS NULL" || operator === "IS NOT NULL";
-  if (!field || !operator || (!isNullCheck && value === '')) {
-    alert("Incomplete WHERE condition. Please fill all fields or remove the condition.");
-    throw new Error("Invalid WHERE condition");
-  }
+  Array.from(whereGroups).forEach((group, index) => {
+    const fieldLabel = group.querySelector(".where-dimension").value;
+    const dataset = document.getElementById("datasetSelect").value;
+    const fieldMap = dimensionMappings[cloudKey][dataset] || {};
+    const field = fieldMap[fieldLabel] || fieldLabel;
+    const operator = group.querySelector(".where-operator").value;
+    const valueInput = group.querySelector(".where-value");
+    const value = valueInput.value.trim();
+    const join = group.querySelector(".join-operator")?.value || "AND";
 
-  let condition = "";
-  if (isNullCheck) {
-    condition = `\`${field}\` ${operator}`;
-  } else {
-    const formattedValue = (operator === "LIKE" || operator === "NOT LIKE") ? `'%${value}%'` : `'${value}'`;
-    condition = `\`${field}\` ${operator} ${formattedValue}`;
-  }
+    // 🛑 Validation
+    const isNullCheck = operator === "IS NULL" || operator === "IS NOT NULL";
+    if (!field || !operator || (!isNullCheck && value === "")) {
+      alert("Incomplete WHERE condition. Please fill all fields or remove the condition.");
+      throw new Error("Invalid WHERE condition");
+    }
 
-  const isLast = index === arr.length - 1;
-  if (!isLast) {
-    const join = group.querySelector(".join-operator").value || "AND";
-    condition = `${condition} ${join}`;
-  }
-  return condition;
-}).filter(Boolean);
+    // Build condition
+    let condition = "";
+    if (isNullCheck) {
+      condition = `\`${field}\` ${operator}`;
+    } else {
+      const formattedValue = (operator === "LIKE" || operator === "NOT LIKE") ? `'%${value}%'` : `'${value}'`;
+      condition = `\`${field}\` ${operator} ${formattedValue}`;
+    }
 
+    if (join === "OR") {
+      // keep adding to OR group
+      orGroup.push(condition);
+    } else {
+      // if we have an active OR group, close it before adding this AND condition
+      if (orGroup.length > 0) {
+        orGroup.push(condition); // add the last condition before closing
+        conditions.push(`(${orGroup.join(" OR ")})`);
+        orGroup = [];
+      } else {
+        conditions.push(condition);
+      }
+    }
 
-  
+    // End of loop: flush any open OR group
+    if (index === whereGroups.length - 1 && orGroup.length > 0) {
+      conditions.push(`(${orGroup.join(" OR ")})`);
+    }
+  });
+
   if (conditions.length > 0) {
-    whereClause = `    WHERE ${conditions.join(" ")}\n`;
+    whereClause = `    WHERE ${conditions.join(" AND ")}\n`;
   }
 }
-
   // GROUP BY & ORDER BY
-  
   let orderClause = "";
   let groupClause = "";
 //const selectedOrder = document.getElementById("customOrderField")?.value || "None";
@@ -1767,3 +1777,4 @@ function updateArrayFromTags(containerId, targetArray) {
   });
 
 }
+
