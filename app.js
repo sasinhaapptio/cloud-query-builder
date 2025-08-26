@@ -1201,13 +1201,24 @@ setTimeout(() => {
 }, 1000);
   return;
 }
-
+// Build mapped dimensions
 const mappedDimensionsRaw = dimensions.map(dim => {
   const map = dimensionMappings[cloudKey][dataset] || {};
-  return map[dim] || dim;
+  const field = map[dim] || dim;
+
+  if (dim === "Date") {
+    // ✅ Only Date gets wrapped in date()
+    return `date(\`${field}\`)`;
+  }
+
+  // For all other fields, return with backticks once
+  return `\`${field}\``;
 });
 
-// 🧹 Deduplicate mapped dimension values
+// Now use as-is without wrapping again
+const selectDims = mappedDimensionsRaw;
+
+// Deduplicate mapped dimension values
 const mappedDimensions = [...new Set(mappedDimensionsRaw)];
 
 const fileType = document.getElementById("fileTypeSelect")?.value || "Combined";
@@ -1238,7 +1249,7 @@ console.log("Metrics Selected:", metrics);
 console.log("Mapped Metrics:", mappedMetrics);
 
 
-  const selectDims = mappedDimensions.map(d => `\`${d}\``);
+  //const selectDims = mappedDimensions.map(d => `\`${d}\``);
   const metricAliases = {
   'Cost(Total)': 'Cost_Total',
   'Cost (Total)': 'Cost_Total',
@@ -1279,13 +1290,25 @@ if (toggle.checked) {
     }
 
     // Build condition
-    let condition = "";
-    if (isNullCheck) {
-      condition = `\`${field}\` ${operator}`;
-    } else {
-      const formattedValue = (operator === "LIKE" || operator === "NOT LIKE") ? `'%${value}%'` : `'${value}'`;
-      condition = `\`${field}\` ${operator} ${formattedValue}`;
-    }
+let condition = "";
+if (isNullCheck) {
+  if (fieldLabel === "Date") {
+    condition = `date(\`${field}\`) ${operator}`;
+  } else {
+    condition = `\`${field}\` ${operator}`;
+  }
+} else {
+  const formattedValue = (operator === "LIKE" || operator === "NOT LIKE") 
+    ? `'%${value}%'` 
+    : `'${value}'`;
+
+  if (fieldLabel === "Date") {
+    // ✅ Wrap Date fields in date()
+    condition = `date(\`${field}\`) ${operator} ${formattedValue}`;
+  } else {
+    condition = `\`${field}\` ${operator} ${formattedValue}`;
+  }
+}
 
     if (join === "OR") {
       // keep adding to OR group
@@ -1314,6 +1337,9 @@ if (toggle.checked) {
   // GROUP BY & ORDER BY
   let orderClause = "";
   let groupClause = "";
+	if (mappedDimensions.length > 0) {
+	groupClause = `    GROUP BY ${mappedDimensions.join(", ")}\n`;
+} 
 //const selectedOrder = document.getElementById("customOrderField")?.value || "None";
 let selectedOrder = document.getElementById("customOrderField")?.value;
 if (!selectedOrder) selectedOrder = "None";
@@ -1323,27 +1349,35 @@ const isMetricSelectedForOrder = selectedMetrics.includes(selectedOrder);
 
 // 👇 Build GROUP BY only if dimensions or tags + metrics
 if ((dimensions.length > 0 || tagSelectLines.length > 0) && metrics.length > 0) {
-  const allGroupFields = [...mappedDimensions, ...tagSelectLines.map(f => f.replace(/[`]/g, ''))];
-  groupClause = `    GROUP BY ${allGroupFields.map(d => `\`${d}\``).join(", ")}\n`;
-}
+  // mappedDimensions are already correctly formatted
+  // tagSelectLines need wrapping safely (they are raw names without backticks after .replace())
+  const tagFields = tagSelectLines.map(f => `\`${f.replace(/[`]/g, '')}\``);
 
+  const allGroupFields = [...mappedDimensions, ...tagFields];
+  groupClause = `    GROUP BY ${allGroupFields.join(", ")}\n`;
+}
 // 🧠 Build ORDER BY (if dropdown is not "None" OR if metrics exist)
 let orderParts = [];
-
 if (selectedOrder !== "None") {
   if (isMetricSelectedForOrder) {
     const alias = metricAliases[selectedOrder] || selectedOrder;
-    orderParts.push(`${alias} ${orderDirection}`); // No backticks for metrics
+    orderParts.push(`${alias} ${orderDirection}`); // Metrics never get backticks
   } else {
     const orderFieldMap = {
       ...dimensionMappings[cloudKey]?.[dataset],
       ...metricAliases
     };
     const mapped = orderFieldMap[selectedOrder] || selectedOrder;
-    orderParts.push(`\`${mapped}\` ${orderDirection}`);
+
+    if (selectedOrder === "Date") {
+      // ✅ Apply date() for Date dimension
+      orderParts.push(`date(\`${mapped}\`) ${orderDirection}`);
+    } else {
+      // ✅ Wrap once in backticks for other dimensions
+      orderParts.push(`\`${mapped}\` ${orderDirection}`);
+    }
   }
 }
-
 // Append other metrics (if any) except the first selected one
 if (metrics.length > 0) {
   const remainingMetrics = selectedMetrics.filter(m => m !== selectedOrder);
@@ -1354,17 +1388,6 @@ if (metrics.length > 0) {
 if (orderParts.length > 0) {
   orderClause = `    ORDER BY ${orderParts.join(", ")}\n`;
 }
-
-// 🧠 ORDER BY Logic
-////const selectedOrder = document.getElementById("customOrderField")?.value || "None";
-////const orderDirection = document.querySelector('input[name="orderDirection"]:checked')?.value || "ASC";
-
-// Determine if the selected order field is a metric
-////const isMetricSelectedForOrder = selectedMetrics.includes(selectedOrder);
-
-// Prepare ORDER BY parts
-////let orderParts = [];
-
 
 let whereCombined = "";
 const isSingleTagLine = schemaLines.length === 1;
@@ -1383,7 +1406,7 @@ if (tagConditionClause) {
 }
 
 
-// ✅ Inject tagClause into query
+// Inject tagClause into query
 //let whereCombined = whereClause + tagClause;
 const customerValue = document.getElementById("customerInput").value.trim() || "customer";
 
@@ -1777,4 +1800,5 @@ function updateArrayFromTags(containerId, targetArray) {
   });
 
 }
+
 
