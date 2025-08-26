@@ -320,7 +320,7 @@ const dimensionMappings = {
 		'Resource GUID': 'ResourceGuid'
     },
     'Azure_UD': {
-		'Currency Code': 'BillingCurrency',
+		'Currency Code': 'BillingCurrencyCode',
 		'Invoice Date': 'billingPeriodStartDate',
 		'Date': 'date',
 		'Instance Family': 'AdditionalInfo',
@@ -1570,11 +1570,6 @@ addTagConditionBtn.addEventListener("click", () => {
 
 const label = document.getElementById("orderDirectionLabel");
 
-toggle.addEventListener("change", () => {
-  label.textContent = toggle.checked ? "Desc" : "Asc";
-});
-
-
 function updateTagJoinVisibility() {
   const groups = document.querySelectorAll(".tag-where-group");
   groups.forEach((group, idx) => {
@@ -1770,4 +1765,5 @@ function updateArrayFromTags(containerId, targetArray) {
       targetArray.push(textNode.textContent.trim());
     }
   });
+
 }
