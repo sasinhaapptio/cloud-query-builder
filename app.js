@@ -23,7 +23,7 @@ const datasets = {
     datasetOptions: ['Azure_EA','Azure_UD'],
     dimensions: {
       'Azure_EA': ['Date', 'Instance Family', 'Instance Size', 'Instance Type', 'Lease Type', 'Operation', 'Reservaton ID', 'Resource ID', 'Transaction Type', 'Usage Type', 'Account ID', 'Account Name', 'Availability Zone', 'Item Description', 'Product Name', 'Region', 'Service Name', 'Resource GUID'],
-      'Azure_UD': ['Currency Code', 'Invoice Date', 'Date', 'Instance Family', 'Instance Size', 'Instance Type', 'Lease Type', 'Operation', 'Reservaton ID', 'Resource ID', 'Transaction Type', 'Usage Type', 'Account ID', 'Account Name', 'Availability Zone', 'Azure Reservation Order Name', 'Item Description', 'Payer Account ID', 'Payer Account Name', 'Product Name', 'Region', 'Reservation Name', 'Seller', 'Service Name']
+      'Azure_UD': ['Currency Code', 'Invoice Date', 'Date', 'Instance Family', 'Instance Size', 'Instance Type', 'Lease Type', 'Operation', 'Reservaton ID', 'Resource ID', 'Transaction Type', 'Usage Type', 'Account ID', 'Account Name', 'Availability Zone', 'Azure Reservation Order Name', 'Item Description', 'Payer Account ID', 'Payer Account Name', 'Product Name', 'Region', 'Reservation Name', 'Resource Group', 'Seller', 'Service Name']
     },
     metrics: {
 	  'Azure_EA': ['Cost(Total)'],
@@ -342,6 +342,7 @@ const dimensionMappings = {
 		'Product Name': 'ConsumedService',
 		'Region': 'resourceLocation',
 		'Reservation Name': 'reservationName',
+		'Resource Group': 'resourceGroupName',
 		'Seller': 'publisherType',
 		'Service Name': 'ConsumedService'
     }
@@ -1800,5 +1801,6 @@ function updateArrayFromTags(containerId, targetArray) {
   });
 
 }
+
 
 
