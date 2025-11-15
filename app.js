@@ -20,7 +20,7 @@ const datasets = {
   },
   azure: {
     title: 'Azure Query Builder',
-    datasetOptions: ['Azure_EA','Azure_UD'],
+    datasetOptions: ['Azure_UD','Azure_EA'],
     dimensions: {
       'Azure_EA': ['Date', 'Instance Family', 'Instance Size', 'Instance Type', 'Lease Type', 'Operation', 'Reservaton ID', 'Resource ID', 'Transaction Type', 'Usage Type', 'Account ID', 'Account Name', 'Availability Zone', 'Item Description', 'Product Name', 'Region', 'Service Name', 'Resource GUID'],
       'Azure_UD': ['Currency Code', 'Invoice Date', 'Date', 'Instance Family', 'Instance Size', 'Instance Type', 'Lease Type', 'Operation', 'Reservaton ID', 'Resource ID', 'Transaction Type', 'Usage Type', 'Account ID', 'Account Name', 'Availability Zone', 'Azure Reservation Order Name', 'Item Description', 'Payer Account ID', 'Payer Account Name', 'Product Name', 'Region', 'Reservation Name', 'Resource Group', 'Seller', 'Service Name']
@@ -1801,6 +1801,7 @@ function updateArrayFromTags(containerId, targetArray) {
   });
 
 }
+
 
 
 
