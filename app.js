@@ -988,7 +988,7 @@ if (isSingleTagField && tagConditionToggleChecked && tagConditionGroupsExist) {
   const fieldLine = schemaLines[0];
   const tagField = extractFullFieldName(fieldLine);
   if (tagField) {
-    alert(`Unable to query WHERE conditions for: ${tagField}`);
+    alert(`Unable to query TAG Conditions for: ${tagField}`);
     return; // Stop further query generation
   }
 }
@@ -1808,6 +1808,7 @@ function updateArrayFromTags(containerId, targetArray) {
   });
 
 }
+
 
 
 
