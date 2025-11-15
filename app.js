@@ -548,6 +548,15 @@ function renderQueryPage(cloud) {
   
   renderDimensionOptions(); 
   renderMetricOptions();
+/* --- HIDE TAG CONDITION BLOCK FOR AZURE ONLY --- */
+if (cloud === "azure") {
+    const tagConditionToggle = document.getElementById("tagConditionToggle");
+    const tagConditionLabel = tagConditionToggle?.closest("div"); 
+    const tagConditionContainer = document.getElementById("tagConditionContainer");
+
+    if (tagConditionLabel) tagConditionLabel.style.display = "none";
+    if (tagConditionContainer) tagConditionContainer.style.display = "none";
+}
   if (cloud === 'azure') {
   const fileTypeContainer = document.getElementById("fileTypeContainer");
   const fileTypeSelect = document.getElementById("fileTypeSelect");
@@ -562,8 +571,6 @@ function renderQueryPage(cloud) {
       renderMetricOptions(); // fallback to default
     }
   };
-
-
   // Update on dataset or fileType change
   document.getElementById("datasetSelect").addEventListener("change", updateFileTypeVisibility);
   fileTypeSelect.addEventListener("change", () => {
@@ -1801,6 +1808,7 @@ function updateArrayFromTags(containerId, targetArray) {
   });
 
 }
+
 
 
 
