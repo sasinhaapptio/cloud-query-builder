@@ -176,57 +176,6 @@ function renderHome() {
     document.documentElement.style.setProperty('--primary-color', '#000');
 
 app.innerHTML = `
-<div class="guide-pill">
-    <a href="https://ibm-my.sharepoint.com/:w:/r/personal/samarpan_sinha_ibm_com/Documents/GUIDE%20BOOK.docx?d=w586052fbb4ca44d3bcff71800125624b&csf=1&web=1&e=VW4sM0"
-       target="_blank">
-        📘 Guide Book
-    </a>
-</div>
-
-<style>
-.guide-pill {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: rgba(0, 255, 255, 0.12);
-    border: 1px solid FF4624;
-    padding: 10px 20px;
-    border-radius: 30px;
-    font-size: 15px;
-    cursor: pointer;
-    box-shadow: 0 0 12px rgba(0, 255, 255, 0.5);
-    animation: neonPulse 2s infinite ease-in-out;
-    backdrop-filter: blur(6px);
-    z-index: 9999;
-    transition: transform 0.25s ease;
-}
-
-.guide-pill:hover {
-    transform: scale(1.08);
-    box-shadow: 0 0 22px rgba(0, 255, 255, 0.85);
-}
-
-.guide-pill a {
-    color: #00ffff;
-    font-weight: 600;
-    text-decoration: none;
-}
-
-@keyframes neonPulse {
-    0% {
-        box-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
-        border-color: #CF2B2B;
-    }
-    50% {
-        box-shadow: 0 0 25px rgba(0, 255, 255, 0.95);
-        border-color: #FF0000;
-    }
-    100% {
-        box-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
-        border-color: #FF0000;
-    }
-}
-</style>
   <h1 class="main-title">"BOB THE BUILDER"</h1>
   <p class="subtitle">Generate databricks queries easily based on your cloud.</p>
   <h2>Select a Cloud Provider</h2>
@@ -1852,6 +1801,7 @@ function updateArrayFromTags(containerId, targetArray) {
   });
 
 }
+
 
 
 
