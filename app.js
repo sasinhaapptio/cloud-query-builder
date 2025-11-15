@@ -455,7 +455,7 @@ function renderQueryPage(cloud) {
    <div id="tagInputs" style="display: flex; flex-wrap: wrap; gap: 0.1rem; justify-content: center;">
     <div class="flex items-center gap-2">
 <div class="tag-field-wrapper" style="display: flex; align-items: center; gap: 0.5rem;">
-  <input type="text" class="tag-input" placeholder="Enter Tag Name" />
+  <input type="text" class="tag-input" placeholder="Enter Tag Key" />
   <button type="button" style="color: red;" onclick="this.parentElement.remove()">❌</button>
 </div>
     </div>
@@ -1801,6 +1801,7 @@ function updateArrayFromTags(containerId, targetArray) {
   });
 
 }
+
 
 
 
