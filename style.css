@@ -833,7 +833,7 @@ input#desc:checked ~ .slider-tab label.desc {
     top: 20px;
     right: 20px;
     background: rgba(0, 255, 255, 0.12);
-    border: 1px solid #00ffff;
+    border: 1px solid 00ffff;
     padding: 10px 20px;
     border-radius: 30px;
     font-size: 15px;
@@ -870,3 +870,4 @@ input#desc:checked ~ .slider-tab label.desc {
         border-color: #00ffff;
     }
 }
+
