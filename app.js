@@ -793,8 +793,8 @@ addWhereBtn.addEventListener("click", () => {
     <select class="where-operator">
       <option value="=">Equals</option>
       <option value="!=">Not Equals</option>
-      <option value="LIKE">Contains</option>
-      <option value="NOT LIKE">Does Not Contain</option>
+      <option value="">Contains</option>
+      <option value="NOT ">Does Not Contain</option>
       <option value="IS NULL">Is Null</option>
       <option value="IS NOT NULL">Is Not Null</option>
     </select>
@@ -1029,7 +1029,7 @@ if (schemaLines.length === 1 || tagFieldLines.length === 1) {
       : extractFullFieldName(fieldLine);
 
   if (tagField) {
-    const tagConditions = tagValues.map(val => `\`${tagField}\` LIKE '%${val}%'`);
+    const tagConditions = tagValues.map(val => `\`${tagField}\` ILIKE '%${val}%'`);
     tagClause = `${tagConditions.join(" OR ")}`;
 
     // Also inject into select/groupBy if needed
@@ -1808,6 +1808,7 @@ function updateArrayFromTags(containerId, targetArray) {
   });
 
 }
+
 
 
 
