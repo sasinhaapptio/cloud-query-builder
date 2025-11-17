@@ -342,7 +342,7 @@ const dimensionMappings = {
 		'Product Name': 'ConsumedService',
 		'Region': 'resourceLocation',
 		'Reservation Name': 'reservationName',
-		'Resource Group': 'resourceGroupName',
+		'Resource Group': 'resourceGroup',
 		'Seller': 'publisherType',
 		'Service Name': 'ConsumedService'
     }
@@ -1808,6 +1808,7 @@ function updateArrayFromTags(containerId, targetArray) {
   });
 
 }
+
 
 
 
