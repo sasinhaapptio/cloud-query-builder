@@ -403,15 +403,15 @@ function renderQueryPage(cloud) {
 <div class="custom-dropdown">
   <label for="datasetSelect">Choose File Type:</label>
   <select id="datasetSelect">
-    ${data.datasetOptions.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
+    ${data.datasetOptions.map(opt => `="${opt}">${opt}</option>`).join('')}
   </select>
 </div>
 <div id="fileTypeContainer" class="custom-dropdown hidden">
   <label for="fileTypeSelect">CSV Type:</label>
   <select id="fileTypeSelect">
-    <option value="Combined">Combined</option>
-    <option value="Cost">Cost</option>
-    <option value="Amortized">Amortized</option>
+    ="Combined">Combined</option>
+    ="Cost">Cost</option>
+    ="Amortized">Amortized</option>
   </select>
 </div>
 
@@ -507,7 +507,7 @@ function renderQueryPage(cloud) {
 <div class="custom-dropdown" id="orderSelector" style="margin-bottom: 1rem;">
   <div style="display: flex; align-items: center; gap: 1rem;">
     <select id="customOrderField">
-      <option value="" disabled selected hidden>Sort By</option>
+      ="" disabled selected hidden>Sort By</option>
     </select>
 <div class="single-tab-toggle">
   <input type="radio" id="asc" name="orderDirection" value="ASC" checked>
@@ -787,14 +787,14 @@ addWhereBtn.addEventListener("click", () => {
 
   inputGroup.innerHTML = `
     <select class="where-dimension">
-      ${dimensions.map(dim => `<option value="${dim}">${dim}</option>`).join('')}
+      ${dimensions.map(dim => `="${dim}">${dim}</option>`).join('')}
     </select>
 
     <select class="where-operator">
       <option value="=">Equals</option>
       <option value="!=">Not Equals</option>
-      <option value="">Contains</option>
-      <option value="NOT ">Does Not Contain</option>
+      <option value="LIKE">Contains</option>
+      <option value="NOT LIKE">Does Not Contain</option>
       <option value="IS NULL">Is Null</option>
       <option value="IS NOT NULL">Is Not Null</option>
     </select>
@@ -1808,6 +1808,7 @@ function updateArrayFromTags(containerId, targetArray) {
   });
 
 }
+
 
 
 
