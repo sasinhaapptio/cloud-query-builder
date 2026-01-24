@@ -260,8 +260,8 @@ const dimensionMappings = {
 		'Item Description': 'line_item_line_item_description',
 		'Payer Account ID': 'bill_payer_account_id', 
 		'Payer Account Name': 'bill_payer_account_name',
-		'Product Name': 'product_comment',
-		'Region': 'product_from_region_code',
+		'Product Name': 'product_region_code',
+		'Region': 'product_to_region_code',
 		'Seller': 'bill_billing_entity',
 		'Service Name': 'line_item_product_code',
 		'Product_Region (UI)': 'product_region_code'
@@ -1811,6 +1811,7 @@ function updateArrayFromTags(containerId, targetArray) {
   });
 
 }
+
 
 
 
