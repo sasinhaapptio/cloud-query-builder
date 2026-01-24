@@ -403,15 +403,15 @@ function renderQueryPage(cloud) {
 <div class="custom-dropdown">
   <label for="datasetSelect">Choose File Type:</label>
   <select id="datasetSelect">
-    ${data.datasetOptions.map(opt => `="${opt}">${opt}</option>`).join('')}
+    ${data.datasetOptions.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
   </select>
 </div>
 <div id="fileTypeContainer" class="custom-dropdown hidden">
   <label for="fileTypeSelect">CSV Type:</label>
   <select id="fileTypeSelect">
-    ="Combined">Combined</option>
-    ="Cost">Cost</option>
-    ="Amortized">Amortized</option>
+    <option value="Combined">Combined</option>
+    <option value="Cost">Cost</option>
+    <option value="Amortized">Amortized</option>
   </select>
 </div>
 
@@ -507,7 +507,7 @@ function renderQueryPage(cloud) {
 <div class="custom-dropdown" id="orderSelector" style="margin-bottom: 1rem;">
   <div style="display: flex; align-items: center; gap: 1rem;">
     <select id="customOrderField">
-      ="" disabled selected hidden>Sort By</option>
+      <option value="" disabled selected hidden>Sort By</option>
     </select>
 <div class="single-tab-toggle">
   <input type="radio" id="asc" name="orderDirection" value="ASC" checked>
@@ -557,6 +557,7 @@ if (cloud === "azure") {
     if (tagConditionLabel) tagConditionLabel.style.display = "none";
     if (tagConditionContainer) tagConditionContainer.style.display = "none";
 }
+  
   if (cloud === 'azure') {
   const fileTypeContainer = document.getElementById("fileTypeContainer");
   const fileTypeSelect = document.getElementById("fileTypeSelect");
@@ -571,6 +572,8 @@ if (cloud === "azure") {
       renderMetricOptions(); // fallback to default
     }
   };
+
+
   // Update on dataset or fileType change
   document.getElementById("datasetSelect").addEventListener("change", updateFileTypeVisibility);
   fileTypeSelect.addEventListener("change", () => {
@@ -787,7 +790,7 @@ addWhereBtn.addEventListener("click", () => {
 
   inputGroup.innerHTML = `
     <select class="where-dimension">
-      ${dimensions.map(dim => `="${dim}">${dim}</option>`).join('')}
+      ${dimensions.map(dim => `<option value="${dim}">${dim}</option>`).join('')}
     </select>
 
     <select class="where-operator">
@@ -988,7 +991,7 @@ if (isSingleTagField && tagConditionToggleChecked && tagConditionGroupsExist) {
   const fieldLine = schemaLines[0];
   const tagField = extractFullFieldName(fieldLine);
   if (tagField) {
-    alert(`Unable to query TAG Conditions for: ${tagField}`);
+    alert(`Unable to query Tag conditions for: ${tagField}`);
     return; // Stop further query generation
   }
 }
@@ -1808,15 +1811,6 @@ function updateArrayFromTags(containerId, targetArray) {
   });
 
 }
-
-
-
-
-
-
-
-
-
 
 
 
