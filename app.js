@@ -181,7 +181,7 @@ app.innerHTML = `
   <h2>Select a Cloud Provider</h2>
   <div class="home-buttons animate-title">
     <button class="cloud-btn aws-btn" onclick="location.hash = '#/aws'">
-      <img src="https://logos-world.net/wp-content/uploads/2021/08/Amazon-Web-Services-AWS-Logo.png" alt="AWS" />
+      <img src="https://raw.githubusercontent.com/lobehub/lobe-icons/refs/heads/master/packages/static-png/light/aws.png" alt="AWS" />
       AWS
     </button>
     <button class="cloud-btn azure-btn" onclick="location.hash = '#/azure'">
@@ -1811,6 +1811,7 @@ function updateArrayFromTags(containerId, targetArray) {
   });
 
 }
+
 
 
 
